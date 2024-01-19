@@ -1,9 +1,11 @@
 import {Request, Response} from "express";
 import {Weather} from "../class/Weather";
-import {weatherFromLongAndLat} from "../services/weatherService";
 import {Place} from "../class/Place";
 
-export function addPlace(request: Request, response: Response) {
+import {weatherFromLongAndLat} from "../services/weatherService";
+
+export async function addPlace(request: Request, response: Response) {
+    await Place.createNew(request.body.place.name, 0, request.body.place.lon, request.body.place.lat)
     return true;
 }
 

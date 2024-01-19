@@ -4,11 +4,11 @@ import {Place} from "./class/Place";
 import { DataSource } from 'typeorm'
 import {locate} from "./controllers/LocationController";
 import {
-  addFavorite,
+  addPlace,
   findWeather,
-  getFavorite,
-  getSingleFavorite,
-  removeFavorite
+  getPlace,
+  getSinglePlace,
+  removePlace
 } from "./controllers/WeatherController";
 
 const dataSource = new DataSource({
@@ -33,15 +33,15 @@ async function main() {
     return response.json(weather);
   });
 
-  server.get("/locations", locate);
+  server.get("/search/places", locate);
 
-  server.get("/favorite/:id", getSingleFavorite);
+  server.get("/places/:id/forecast", getSinglePlace);
 
-  server.post("/favorite", addFavorite);
+  server.post("/places", addPlace);
 
-  server.delete("/favorite/:id", removeFavorite);
+  server.delete("/places/:id", removePlace);
 
-  server.get("/favorite", getFavorite);
+  server.get("/places", getPlace);
 
   server.get("/forecast", findWeather)
 

@@ -2,6 +2,7 @@ import { TemperatureUnit } from "../types";
 import { WEATHER_CODES } from "../weather-codes";
 import { getTemperatureFahrenheit } from "../services/temperatureService";
 import {Place} from "./Place";
+import {weatherFromLongAndLat} from "../services/weatherService";
 
 export class Weather {
   city: string;
@@ -12,23 +13,9 @@ export class Weather {
     this.city = city;
   }
 
-  async setCurrent(coordinates: Place): Promise<void> {
-
-    if (!coordinates) {
-      throw new Error(`No coordinates found for city ${this.city}.`);
-    }
-
-    const { latitude, longitude } = coordinates;
-
-    const weatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code`
-    );
-    const weather = (await weatherResponse.json()) as {
-      current: { temperature_2m: number; weather_code: number };
-    };
-
-    this.temperatureCelsius = weather.current.temperature_2m;
-    this.weatherCode = weather.current.weather_code;
+  async setCurrent(): Promise<void> {
+    const place = new Place;
+    const weather = await weatherFromLongAndLat(place, this)
   }
 
   print(temperatureUnit: TemperatureUnit = "CELSIUS"): void {

@@ -27,4 +27,5 @@ export class Place extends BaseEntity {
         await place.save();
         return place;
     }
+
 }

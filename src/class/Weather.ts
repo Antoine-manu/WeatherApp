@@ -5,23 +5,24 @@ import {Place} from "./Place";
 import {weatherFromLongAndLat} from "../services/weatherService";
 
 export class Weather {
-  city: string;
+  place: Place;
   temperatureCelsius?: number;
   weatherCode?: number;
 
-  constructor(city: string) {
-    this.city = city;
+  constructor(place: Place) {
+    this.place = place;
   }
 
   async setCurrent(): Promise<void> {
-    const place = new Place;
-    const weather = await weatherFromLongAndLat(place, this)
+    const newWeather = await weatherFromLongAndLat(this.place)
+    this.temperatureCelsius = newWeather.current.temperature_2m;
+    this.weatherCode = newWeather.current.weather_code;
   }
 
   print(temperatureUnit: TemperatureUnit = "CELSIUS"): void {
     if (this.temperatureCelsius === undefined || this.weatherCode === undefined) {
       throw new Error(
-        `No weather data found for city ${this.city}: run \`setCurrent\` on Weather object.`
+        `No weather data found for city ${this.place.name}: run \`setCurrent\` on Weather object.`
       );
     }
 
@@ -55,7 +56,7 @@ export class Weather {
         "|"
     );
     console.log(
-      `| ${this.city}   | ${temperature}°${shortTemperatureUnit}             | ${icon} ${text}`
+      `| ${this.place.name}   | ${temperature}°${shortTemperatureUnit}             | ${icon} ${text}`
     );
     console.log(
       "└" +

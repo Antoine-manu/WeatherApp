@@ -27,12 +27,6 @@ async function main() {
     return response.json({ message: "Hello world!" });
   });
 
-  server.get("/weather", async (_request, response) => {
-    const weather = new Weather("Lille");
-    await weather.setCurrent();
-    return response.json(weather);
-  });
-
   server.get("/search/places", locate);
 
   server.get("/places/:id/forecast", getSinglePlace);

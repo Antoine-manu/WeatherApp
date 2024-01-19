@@ -30,6 +30,6 @@ export async function findWeather(request: Request, response: Response) {
         weather = await weatherFromLongAndLat(place, weather)
         return response.json(weather)
     } else {
-        return response.status(400).json({message: 'Parameter `city` not found'})
+        return response.status(400).json({message: 'Parameter `name`, `latitude` or `longitude` is not found'})
     }
 }

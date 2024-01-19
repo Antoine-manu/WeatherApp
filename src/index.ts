@@ -1,8 +1,19 @@
 import { Weather } from "./Weather";
+import { Place } from "./Place";
+
+import { DataSource } from 'typeorm'
 import express from "express";
+
+const dataSource = new DataSource({
+  type: "sqlite",
+  database: "./sqlite.db",
+  entities: [Place],
+  synchronize: true
+})
 
 const PORT = 3500;
 async function main() {
+  await dataSource.initialize();
   const server = express();
 
   server.get("/", (_request, response) => {

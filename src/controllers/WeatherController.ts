@@ -15,16 +15,7 @@ export function removePlace(request: Request, response: Response) {
 }
 
 export function getPlace(request: Request, response: Response) {
-    createConnection()
-        .then(async connection => {
-            const yourEntityRepository = connection.getRepository(Place);
-            const places = await yourEntityRepository.find();
-            console.log('Tous les éléments :', places);
-            return response.json({data : places})
-            await connection.close();
-        })
-        .catch(error => console.log('Erreur :', error));
-    return false;
+    return Place.getAllWeather;
 }
 
 export function getSinglePlace(request: Request, response: Response) {

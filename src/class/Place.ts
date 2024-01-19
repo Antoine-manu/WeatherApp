@@ -1,4 +1,6 @@
 import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Weather} from "./Weather";
+import {weatherFromLongAndLat} from "../services/weatherService";
 
 @Entity()
 export class Place extends BaseEntity {
@@ -26,6 +28,17 @@ export class Place extends BaseEntity {
 
         await place.save();
         return place;
+    }
+
+    static async getAllWeather() {
+        const places = this.find();
+        const weatherArray: Weather[] = []
+        Object.values(places).forEach((place: Place) => {
+            let weather = new Weather(place)
+            weather.setCurrent()
+            weatherArray.push(weather)
+        })
+        return weatherArray
     }
 
 }

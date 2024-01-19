@@ -42,7 +42,7 @@ export class Weather {
   }
 
   print(temperatureUnit: TemperatureUnit = "CELSIUS"): void {
-    if (!this.temperatureCelsius || !this.weatherCode) {
+    if (this.temperatureCelsius === undefined || this.weatherCode === undefined) {
       throw new Error(
         `No weather data found for city ${this.city}: run \`setCurrent\` on Weather object.`
       );

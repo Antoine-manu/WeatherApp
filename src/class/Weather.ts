@@ -1,15 +1,15 @@
-import { CoordinatesForCity, TemperatureUnit } from "./types";
-import { WEATHER_CODES } from "./weather-codes";
+import { TemperatureUnit } from "../types";
+import { WEATHER_CODES } from "../weather-codes";
+import { getTemperatureFahrenheit } from "../services/temperatureService";
+import {Place} from "./Place";
 
-const COORDINATES_FOR_CITIES: CoordinatesForCity[] = [
-  { city: "Lille", latitude: 50.6365654, longitude: 3.0635282 },
-  { city: "Paris", latitude: 48.8534951, longitude: 2.3483915 },
-  { city: "Reims", latitude: 49.2577886, longitude: 4.031926 },
+const COORDINATES_FOR_CITIES: Place[] = [
+  { display_name: "Lille", lat: 50.6365654, long: 3.0635282 },
+  { display_name: "Paris", lat: 48.8534951, long: 2.3483915 },
+  { display_name: "Reims", lat: 49.2577886, long: 4.031926 },
 ];
 
-function getTemperatureFahrenheit(tempCelsius: number): number {
-  return (tempCelsius * 9) / 5 + 32;
-}
+
 
 export class Weather {
   city: string;
@@ -22,16 +22,16 @@ export class Weather {
 
   async setCurrent(): Promise<void> {
     const coordinates = COORDINATES_FOR_CITIES.find(
-      (_coordinates) => _coordinates.city === this.city
+      (_coordinates) => _coordinates.display_name === this.city
     );
     if (!coordinates) {
       throw new Error(`No coordinates found for city ${this.city}.`);
     }
 
-    const { latitude, longitude } = coordinates;
+    const { lat, long } = coordinates;
 
     const weatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code`
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=temperature_2m,weather_code`
     );
     const weather = (await weatherResponse.json()) as {
       current: { temperature_2m: number; weather_code: number };

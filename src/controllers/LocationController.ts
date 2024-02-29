@@ -7,7 +7,7 @@ import express, {Request, Response} from "express";
 export function locate(request: Request, response: Response){
     const search = request.query.search
     if(!search || Array.isArray(search)){
-        return response.status(400).json({message: 'FF'})
+        return response.status(400).json({message: ''})
     }
     findLocation(search as string, response)
 }

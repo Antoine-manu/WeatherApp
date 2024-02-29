@@ -7,22 +7,26 @@ import {all} from "axios";
 import {weatherFromLongAndLat} from "../services/weatherService";
 
 export async function addPlace(request: Request, response: Response) {
-    await Place.createNew(request.body.place.name, 0, request.body.place.lon, request.body.place.lat)
-    return true;
+    const place = await Place.createNew(request.body.name, request.body.apiId , request.body.lon, request.body.lat)
+    return response.json(place);
 }
 
 export function removePlace(request: Request, response: Response) {
-    const id = request.params.id
-    return false;
+    const id: number = parseInt(request.params.id)
+    const place: Place = Place.findOneById(id)
+    Place.remove(place)
+    return response.status(200)
 }
 
 export function getPlace(request: Request, response: Response) {
-    return Place.getAllWeather;
+    const places = Place.getAllWeather()
+    return response.json({places : places});
 }
 
 export function getSinglePlace(request: Request, response: Response) {
     const id = request.params.id
-    return false;
+    const place = Place.findOneById(id)
+    return response.json(place);
 }
 
 export async function findWeather(request: Request, response: Response) {

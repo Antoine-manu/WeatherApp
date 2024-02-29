@@ -30,11 +30,18 @@ export class Place extends BaseEntity {
         return place;
     }
 
+    static async deleteById(id: number): Promise<Place> {
+        const place = this.deleteById(id)
+        return place;
+    }
+
+
     static async getAllWeather() {
         const places = this.find();
         const weatherArray: Weather[] = []
         Object.values(places).forEach((place: Place) => {
             let weather = new Weather(place)
+            console.log(place)
             weather.setCurrent()
             weatherArray.push(weather)
         })
